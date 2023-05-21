@@ -4,42 +4,51 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    
     [Header("Movement")]
     [SerializeField] float moveSpeed;
-    private Transform orientation;
     float horizontalInput;
     float verticalInput;
     Vector3 moveDirection;
-    Rigidbody rb;
-    [Space]
+    
+    [Header("Jump")]
     [SerializeField] float jumpForce;
     [SerializeField] float jumpCoodown;
     [SerializeField] float airMultiplier;
-    bool readyToJump;
-    [Space]
-    [SerializeField]
-    private float groundDrag;
+    bool readyToJump = true;
+
+    [Header("Drag")]
+    [SerializeField] private float groundDrag;
 
     [Header("Keybinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
-    [SerializeField] float playerHeight;
     [SerializeField] LayerMask groundLayer;
-    bool grounded;
+    [SerializeField] float playerHeight;
+    [SerializeField] private bool grounded;
+
+    [Header("Slope Handling")]
+    [SerializeField] float maxSlopeAngle;
+    private RaycastHit slopeHit;
 
     [Header("References")]
+    [SerializeField] private Transform orientation;
     [SerializeField] private Transform cam;
+    Rigidbody rb;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         orientation = transform.GetChild(1);
         cam = Camera.main.transform;
+
     }
+
     private void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundLayer);
+        playerHeight = transform.localScale.y;
+        grounded = Physics.CheckSphere(transform.position - new Vector3(0, playerHeight*0.55f ,0) , playerHeight * .15f, groundLayer);
 
         InputHandling();
         SpeedControl();
@@ -57,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKey(jumpKey)) //&& readyToJump && grounded
+        if (Input.GetKey(jumpKey) && grounded) //&& readyToJump && grounded
         {
             readyToJump = false;
             Jump();
@@ -71,7 +80,11 @@ public class PlayerMovement : MonoBehaviour
         Quaternion neutralRotation = Quaternion.Euler(0f, cameraRotation.eulerAngles.y, 0f);
 
         moveDirection = neutralRotation * Vector3.forward * verticalInput + neutralRotation * Vector3.right * horizontalInput;
-        //moveDirection = cam.forward * verticalInput + cam.right * horizontalInput;
+
+        if (OnSlope())
+        {
+            rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 20f, ForceMode.Force);
+        }
 
         if (grounded)
             rb.AddForce(10f * moveSpeed * moveDirection.normalized, ForceMode.Force);
@@ -98,6 +111,20 @@ public class PlayerMovement : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+    private bool OnSlope()
+    {
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * .5f + .3f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
+        }
+        return false;
+    }
+
+    private Vector3 GetSlopeMoveDirection()
+    {
+        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
     }
 
 }

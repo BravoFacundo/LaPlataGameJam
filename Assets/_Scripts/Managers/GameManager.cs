@@ -20,17 +20,17 @@ public class GameManager : MonoBehaviour
 
     private void CheckGoalList()
     {
-        bool contieneTodos = true;
+        bool hasAllGoals = true;
         foreach (string str in GoalList)
         {
             if (!currentGoalList.Contains(str))
             {
-                contieneTodos = false;
+                hasAllGoals = false;
                 break;
             }
         }
 
-        if (contieneTodos)
+        if (hasAllGoals)
         {
             Debug.Log("La lista contiene todos los strings deseados");
         }
