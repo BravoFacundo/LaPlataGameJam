@@ -13,15 +13,24 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("Jump")]
     [SerializeField] float jumpForce;
-    [SerializeField] float jumpCoodown;
+    [SerializeField] float jumpCooldown;
     [SerializeField] float airMultiplier;
     bool readyToJump = true;
 
     [Header("Drag")]
     [SerializeField] private float groundDrag;
 
+    [Header("Size")]
+    [SerializeField] private int size = 2;
+    [SerializeField] private bool canChange = true;
+    [SerializeField] float changeCooldown;
+    [SerializeField] private bool canGrow = true;
+    [SerializeField] private bool canShrink = true;
+
     [Header("Keybinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
+    [SerializeField] KeyCode growKey = KeyCode.Mouse0;
+    [SerializeField] KeyCode shrinkKey = KeyCode.Mouse1;
 
     [Header("Ground Check")]
     [SerializeField] LayerMask groundLayer;
@@ -70,7 +79,21 @@ public class PlayerMovement : MonoBehaviour
         {
             readyToJump = false;
             Jump();
-            Invoke(nameof(ResetJump), jumpCoodown);
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+        if (Input.GetKey(growKey) && size < 3 && canChange)
+        {
+            transform.localScale *= 5f;
+            size++;
+            canChange = false;
+            Invoke(nameof(ResetChange), changeCooldown);
+        }
+        if (Input.GetKey(shrinkKey) && size > 1 && canChange)
+        {
+            transform.localScale *= 0.2f;
+            size--;
+            canChange = false;
+            Invoke(nameof(ResetChange), changeCooldown);
         }
     }
 
@@ -108,9 +131,16 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(orientation.up * jumpForce, ForceMode.Impulse);
     }
+
+    //------------------------------Invokes-----------------------------------------//
+
     private void ResetJump()
     {
         readyToJump = true;
+    }
+    private void ResetChange()
+    {
+        canChange = true;
     }
     private bool OnSlope()
     {

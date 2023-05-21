@@ -25642,10 +25642,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   jumpForce: 50
-  jumpCoodown: 0.25
+  jumpCooldown: 0
   airMultiplier: 0.4
   groundDrag: 1
+  size: 2
+  canChange: 1
+  changeCooldown: 0.25
+  canGrow: 1
+  canShrink: 1
   jumpKey: 32
+  growKey: 323
+  shrinkKey: 324
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
