@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundDrag;
 
     [Header("Size")]
-    [SerializeField] private int size = 2;
+    public int size = 2;
     [SerializeField] private bool canChange = true;
     [SerializeField] float changeCooldown;
     [SerializeField] private bool canGrow = true;
