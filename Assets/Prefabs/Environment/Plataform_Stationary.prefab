@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 4737271812978514195}
   m_Layer: 3
   m_Name: Plataform_Stationary
-  m_TagString: Untagged
+  m_TagString: SafeGround
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 2934876491900015371}
   m_Layer: 3
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: SafeGround
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

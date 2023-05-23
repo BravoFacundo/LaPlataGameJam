@@ -5,12 +5,12 @@ using UnityEngine;
 public class TriggerAlarm : MonoBehaviour
 {
     [SerializeField] private int triggerOrderNumber;
-    private BasketManager basketManager;
+    private GoalManager basketManager;
 
 
     private void Start()
     {
-        basketManager = transform.parent.GetComponent<BasketManager>();
+        basketManager = transform.parent.GetComponent<GoalManager>();
     }
 
     private void OnTriggerEnter(Collider other)

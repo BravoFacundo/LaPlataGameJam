@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     public void AddGoalToList(string goalToAdd)
     {
-        currentGoalList.Add(goalToAdd);
+        if (!currentGoalList.Contains(goalToAdd)) currentGoalList.Add(goalToAdd);
         CheckGoalList();
     }
 
