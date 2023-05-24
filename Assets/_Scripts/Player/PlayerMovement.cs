@@ -51,13 +51,12 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         orientation = transform.GetChild(1);
         cam = Camera.main.transform;
-
     }
 
     private void Update()
     {
         playerHeight = transform.localScale.y;
-        grounded = Physics.CheckSphere(transform.position - new Vector3(0, playerHeight*0.55f ,0) , playerHeight * .15f, groundLayer);
+        grounded = Physics.CheckSphere(transform.position - new Vector3(0, playerHeight*0.55f ,0) , playerHeight * .05f, groundLayer);
 
         InputHandling();
         SpeedControl();

@@ -259,7 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4737271812978514195}
   m_Layer: 3
-  m_Name: Plataform_Stationary
+  m_Name: Plataform_Stationary_Circus
   m_TagString: SafeGround
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
