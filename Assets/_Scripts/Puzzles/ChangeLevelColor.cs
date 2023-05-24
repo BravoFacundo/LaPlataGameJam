@@ -55,8 +55,8 @@ public class ChangeLevelColor : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0)) ChangeMaterialColor("Bar");
-        if (Input.GetMouseButtonDown(2)) ChangeMaterialColor("Circus");
+        if (Input.GetKeyDown(KeyCode.U)) ChangeMaterialColor("Bar");
+        if (Input.GetKeyDown(KeyCode.I)) ChangeMaterialColor("Circus");
     }
 
     public void StartColorTransition()
