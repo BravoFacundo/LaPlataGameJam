@@ -26,7 +26,7 @@ public class Golpe : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Pelota") && !golpeActivo)
+        if (collision.gameObject.CompareTag("Player") && !golpeActivo)
         {
             direccionGolpe = transform.forward;
 
