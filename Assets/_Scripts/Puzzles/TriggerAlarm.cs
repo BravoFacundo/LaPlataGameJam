@@ -7,7 +7,6 @@ public class TriggerAlarm : MonoBehaviour
     [SerializeField] private int triggerOrderNumber;
     private GoalManager basketManager;
 
-
     private void Start()
     {
         basketManager = transform.parent.GetComponent<GoalManager>();

@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<string> GoalList;
     [SerializeField] private List<string> currentGoalList;
 
+    [Header("References")]
+    [SerializeField] private MusicManager musicManager;
+
     private void Start()
     {
         CheckGoalList();
@@ -28,11 +31,15 @@ public class GameManager : MonoBehaviour
                 hasAllGoals = false;
                 break;
             }
+            if (currentGoalList.Contains("Tutorial"))
+            {
+                musicManager.PlayMusicClip("Original");
+            }
         }
 
         if (hasAllGoals)
         {
-            Debug.Log("La lista contiene todos los strings deseados");
+            musicManager.PlayMusicClip("Final");
         }
         else
         {
