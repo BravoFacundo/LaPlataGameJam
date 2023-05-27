@@ -704,8 +704,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonActionDelay: 1
-  creditsPage: {fileID: 312061680}
   menuPage: {fileID: 1951261128}
+  creditsPage: {fileID: 312061680}
+  musicManager: {fileID: 1443599167}
   ballRB: {fileID: 2698567828916343003}
   secondaryCamera: {fileID: 1636655129}
 --- !u!1 &1028437626
@@ -1250,6 +1251,8 @@ MonoBehaviour:
   currentAudioClip: 
   musicClips:
   - {fileID: 8300000, guid: 4f9ec83bb017fe1468bf25ae35b18c82, type: 3}
+  - {fileID: 8300000, guid: 3fa75e4620f8e5c4893b645ab0af1d07, type: 3}
+  - {fileID: 8300000, guid: 80f1ef9dee1589146a539a0e8c0f78b5, type: 3}
 --- !u!82 &1443599168
 AudioSource:
   m_ObjectHideFlags: 0

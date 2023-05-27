@@ -13,6 +13,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject creditsPage;
 
     [Header("Scene References")]
+    [SerializeField] private MusicManager musicManager;
     [SerializeField] private Rigidbody ballRB;
     private Camera mainCamera;
     [SerializeField] private Camera secondaryCamera;
@@ -25,6 +26,8 @@ public class MenuManager : MonoBehaviour
     public void PlayButtonPressed() => StartCoroutine(nameof(PlayButton));
     private IEnumerator PlayButton()
     {
+        musicManager.PlayMusicClip(2);
+
         yield return new WaitForSeconds(buttonActionDelay);
         SceneManager.LoadScene("Gameplay");
     }
@@ -44,6 +47,8 @@ public class MenuManager : MonoBehaviour
 
         menuPage.SetActive(false);
         creditsPage.SetActive(true);
+
+        musicManager.PlayMusicClip(1);
         yield return new WaitForSeconds(buttonActionDelay);
     }
 
@@ -55,6 +60,8 @@ public class MenuManager : MonoBehaviour
 
         creditsPage.SetActive(false);
         menuPage.SetActive(true);
+
+        musicManager.PlayMusicClip(0);
         yield return new WaitForSeconds(buttonActionDelay);
     }
 

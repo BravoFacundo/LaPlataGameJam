@@ -49,7 +49,7 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    private void PlayMusicClip(int clipIndex)
+    public void PlayMusicClip(int clipIndex)
     {
         if (clipIndex >= 0 && clipIndex < musicClips.Count)
         {
