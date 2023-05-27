@@ -9,49 +9,53 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private float buttonActionDelay = 1f;
 
     [Header("Canvas References")]
-    [SerializeField] private GameObject creditsPage;
     [SerializeField] private GameObject menuPage;
+    [SerializeField] private GameObject creditsPage;
 
     [Header("Scene References")]
-    [SerializeField] private Camera secondaryCamera;
-    private Camera mainCamera;
     [SerializeField] private Rigidbody ballRB;
+    private Camera mainCamera;
+    [SerializeField] private Camera secondaryCamera;
 
     private void Start()
     {
         mainCamera = Camera.main;
     }
 
-    public IEnumerator ButtonTestPressed()
+    public void PlayButtonPressed() => StartCoroutine(nameof(PlayButton));
+    private IEnumerator PlayButton()
     {
         yield return new WaitForSeconds(buttonActionDelay);
-    }
-
-    public void PlayButtonPressed()
-    {
         SceneManager.LoadScene("Gameplay");
     }
 
-    public void ExitButtonPressed()
+    public void ExitButtonPressed() => StartCoroutine(nameof(ExitButton));
+    private IEnumerator ExitButton()
     {
+        yield return new WaitForSeconds(buttonActionDelay); 
         Application.Quit();
     }
 
-    public void CreditsButtonPressed()
-    {        
+    public void CreditsButtonPressed() => StartCoroutine(nameof(CreditsButton));
+    private IEnumerator CreditsButton()
+    {
         mainCamera.gameObject.SetActive(false);
         secondaryCamera.gameObject.SetActive(true);
 
         menuPage.SetActive(false);
         creditsPage.SetActive(true);
+        yield return new WaitForSeconds(buttonActionDelay);
     }
 
-    public void BackButtonPressed()
+    public void BackButtonPressed() => StartCoroutine(nameof(BackButton));
+    private IEnumerator BackButton()
     {
         secondaryCamera.gameObject.SetActive(false);
         mainCamera.gameObject.SetActive(true);
 
         creditsPage.SetActive(false);
-        menuPage.SetActive(true);        
+        menuPage.SetActive(true);
+        yield return new WaitForSeconds(buttonActionDelay);
     }
+
 }
