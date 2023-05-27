@@ -80,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown);
         }
+
         if (Input.GetKey(growKey) && size < 3 && canChange)
         {
             transform.localScale *= 5f;
@@ -89,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetKey(shrinkKey) && size > 1 && canChange)
         {
-            transform.localScale *= 0.2f;
+            transform.localScale *= .2f;
             size--;
             canChange = false;
             Invoke(nameof(ResetChange), changeCooldown);

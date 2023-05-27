@@ -7,6 +7,7 @@ public class MenuManager : MonoBehaviour
 {
     [Header("Menu Configuration")]
     [SerializeField] private float buttonActionDelay = 1f;
+    [SerializeField] private float upwardForce = 10f;
 
     [Header("Canvas References")]
     [SerializeField] private GameObject menuPage;
@@ -27,6 +28,7 @@ public class MenuManager : MonoBehaviour
     private IEnumerator PlayButton()
     {
         musicManager.PlayMusicClip(2);
+        ApplyUpwardForce();
 
         yield return new WaitForSeconds(buttonActionDelay);
         SceneManager.LoadScene("Gameplay");
@@ -35,6 +37,7 @@ public class MenuManager : MonoBehaviour
     public void ExitButtonPressed() => StartCoroutine(nameof(ExitButton));
     private IEnumerator ExitButton()
     {
+        ApplyUpwardForce();
         yield return new WaitForSeconds(buttonActionDelay); 
         Application.Quit();
     }
@@ -49,6 +52,8 @@ public class MenuManager : MonoBehaviour
         creditsPage.SetActive(true);
 
         musicManager.PlayMusicClip(1);
+        ApplyUpwardForce();
+
         yield return new WaitForSeconds(buttonActionDelay);
     }
 
@@ -62,7 +67,17 @@ public class MenuManager : MonoBehaviour
         menuPage.SetActive(true);
 
         musicManager.PlayMusicClip(0);
+        ApplyUpwardForce();
+
         yield return new WaitForSeconds(buttonActionDelay);
+    }
+
+    private void ApplyUpwardForce()
+    {
+        if (ballRB != null)
+        {
+            ballRB.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
+        }
     }
 
 }
