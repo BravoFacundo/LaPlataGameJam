@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ExpulsionCanon : MonoBehaviour
 {
-    public CannonController cannonController;
+    public CannonBehaviour cannonController;
     public float fuerzaEmpuje;
     bool temporizadorIniciado = false;
     float tiempoEspera = 3f;

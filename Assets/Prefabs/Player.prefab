@@ -1046,8 +1046,8 @@ GameObject:
   - component: {fileID: 4021796028308501678}
   - component: {fileID: 4021796028308501679}
   - component: {fileID: 4021796028308501676}
-  - component: {fileID: 4021796028308501651}
   - component: {fileID: 4021796028308501650}
+  - component: {fileID: 4021796028308501651}
   - component: {fileID: 4021796028308501677}
   - component: {fileID: 4021796028308501674}
   m_Layer: 0
@@ -1153,12 +1153,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdc9f71f802c2094d891ded9adedbea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 13
   jumpForce: 50
   jumpCooldown: 0
   airMultiplier: 0.4
   groundDrag: 1
-  size: 1
+  size: 2
   canChange: 1
   changeCooldown: 0.25
   canGrow: 1
@@ -1174,22 +1174,6 @@ MonoBehaviour:
   maxSlopeAngle: 0
   orientation: {fileID: 0}
   cam: {fileID: 0}
---- !u!114 &4021796028308501651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4021796028308501675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57fd9b9d6a8341b48ace3c3e9f10fe0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnYValue: -10
-  respawnYOffset: 10
-  safeGroundHeightDetection: 2
-  lastSafeGroundPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &4021796028308501650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1207,6 +1191,22 @@ MonoBehaviour:
   - {fileID: 2281809660754223072, guid: 13e6ab6174a37b94980479d89104cd20, type: 3}
   - {fileID: 5347988837814655501, guid: 0760cb589b4303440b8374b8b33cf828, type: 3}
   - {fileID: 9087234974094077183, guid: 2ad180606e81310469647ed0bc822f16, type: 3}
+--- !u!114 &4021796028308501651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4021796028308501675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57fd9b9d6a8341b48ace3c3e9f10fe0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnYValue: -10
+  respawnYOffset: 10
+  safeGroundHeightDetection: 2
+  lastSafeGroundPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &4021796028308501677
 Rigidbody:
   m_ObjectHideFlags: 0
