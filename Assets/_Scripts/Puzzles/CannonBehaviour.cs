@@ -4,34 +4,53 @@ using UnityEngine;
 
 public class CannonBehaviour : MonoBehaviour
 {
-        public GameObject cannon;
-        public bool jugadorDentro = false; // Variable para  rastrear si el jugador está dentro del cilindro
+    [Header("Debug")]
+    public bool isMoving = true;
 
-        public void OnTriggerEnter(Collider other)
+    [Header("Configuration")]
+    public float pushForce = 20f;
+    [SerializeField] private float rotationSpeed = 1.0f;
+    [SerializeField] private float retractionSpeed = 2.0f;
+    private float startTime;
+
+    [Header("References")]
+    [SerializeField] private Transform MovingPart;
+    [SerializeField] private Transform pivot;
+    [SerializeField] private Quaternion startRotation;
+    [SerializeField] private Quaternion finalRotation;
+
+    private void Start()
+    {
+        startTime = Time.time;
+    }
+
+    private void Update()
+    {
+        if (isMoving)
         {
-            if (other.CompareTag("Player"))
+            float currentTime = Time.time - startTime;
+            float t = currentTime / rotationSpeed;
+
+            MovingPart.localRotation = Quaternion.Lerp(startRotation, finalRotation, t);
+
+            if (t >= 1.0f)
             {
-                jugadorDentro = true;
-                
-            Debug.Log("El jugador esta dentro del cañon");
+                //startTime = Time.time;
+                //isMoving = false;
             }
         }
-
-        private void OnTriggerExit(Collider other)
+        else
         {
-            if (other.CompareTag("Player"))
-            {
-                jugadorDentro = false;
-                CancelInvoke("Expulsar");
-            }
-        }
+            float currentTime = Time.time - startTime;
+            float t = currentTime / retractionSpeed;
 
-        private void Expulsar()
-        {
-            if (jugadorDentro)
+            MovingPart.localRotation = Quaternion.Lerp(finalRotation, startRotation, t);
+
+            if (t >= 1.0f)
             {
-                Rigidbody rb = GetComponent<Rigidbody>();
-                rb.AddForce(Vector3.up * 100f, ForceMode.Impulse);
+                //startTime = Time.time;
+                //isMoving = true;
             }
         }
     }
+}

@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("La lista no contiene todos los strings deseados");
+            //Debug.Log("La lista no contiene todos los strings deseados");
         }
     }
  
