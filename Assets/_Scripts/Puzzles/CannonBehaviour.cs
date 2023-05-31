@@ -6,12 +6,15 @@ public class CannonBehaviour : MonoBehaviour
 {
     [Header("Debug")]
     public bool isMoving = true;
+    public Rigidbody playerRB;
 
     [Header("Configuration")]
     public float pushForce = 20f;
     [SerializeField] private float rotationSpeed = 1.0f;
     [SerializeField] private float retractionSpeed = 2.0f;
+    public float actionDelay = 1.5f;
     private float startTime;
+    private bool actionLock;
 
     [Header("References")]
     [SerializeField] private Transform MovingPart;
@@ -24,6 +27,31 @@ public class CannonBehaviour : MonoBehaviour
         startTime = Time.time;
     }
 
+    public void PlayerEnterCannon()
+    {
+        startTime = Time.time;
+        isMoving = true;
+    }
+    public IEnumerator PlayerExitCannon()
+    {
+        yield return new WaitForSeconds(actionDelay);
+        startTime = Time.time;
+        isMoving = false;
+        actionLock = false;
+    }
+    public IEnumerator PlayerLaunch()
+    {
+        yield return new WaitForSeconds(actionDelay);
+        print("launch");
+
+        Vector3 forceDirection = MovingPart.forward;
+        forceDirection.Normalize();
+        playerRB.transform.position = pivot.position;
+        playerRB.AddForce(forceDirection * pushForce, ForceMode.Impulse);
+
+        StartCoroutine(nameof(PlayerExitCannon));
+    }
+
     private void Update()
     {
         if (isMoving)
@@ -33,10 +61,10 @@ public class CannonBehaviour : MonoBehaviour
 
             MovingPart.localRotation = Quaternion.Lerp(startRotation, finalRotation, t);
 
-            if (t >= 1.0f)
+            if (t >= 1.0f && !actionLock)
             {
-                //startTime = Time.time;
-                //isMoving = false;
+                StartCoroutine(PlayerLaunch());            
+                actionLock = true;
             }
         }
         else
@@ -45,12 +73,6 @@ public class CannonBehaviour : MonoBehaviour
             float t = currentTime / retractionSpeed;
 
             MovingPart.localRotation = Quaternion.Lerp(finalRotation, startRotation, t);
-
-            if (t >= 1.0f)
-            {
-                //startTime = Time.time;
-                //isMoving = true;
-            }
         }
     }
 }

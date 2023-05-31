@@ -6,26 +6,36 @@ public class CannonTrigger : MonoBehaviour
 {
     [Header("Debug")]
     [SerializeField] private CannonBehaviour cannonBehaviour;
+    private float triggerEnterDelay;
     private bool pushed;
 
     private void Awake()
     {
         cannonBehaviour = transform.parent.parent.GetComponent<CannonBehaviour>();
+        triggerEnterDelay = cannonBehaviour.actionDelay;
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        Rigidbody collisionRB = collision.gameObject.GetComponent<Rigidbody>();
-
-        if (!cannonBehaviour.isMoving && collisionRB != null)
+        if (collision.CompareTag("Player"))
         {
-            print("Trig");
-
-            Vector3 forceDirection = transform.up;
-            forceDirection.Normalize();
-
-            collisionRB.AddForce(forceDirection * cannonBehaviour.pushForce, ForceMode.Impulse);
+            StartCoroutine(TriggerEnterDelay(triggerEnterDelay));
+            cannonBehaviour.playerRB = collision.GetComponent<Rigidbody>();
         }
+    }
+    private IEnumerator TriggerEnterDelay(float triggerEnterDelay)
+    {
+        yield return new WaitForSeconds(triggerEnterDelay);
+        cannonBehaviour.PlayerEnterCannon();
 
+    }
+    private void OnTriggerExit(Collider collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            StopCoroutine(nameof(TriggerEnterDelay));
+            StartCoroutine(cannonBehaviour.PlayerExitCannon());
+            cannonBehaviour.playerRB = null;
+        }
     }
 }
