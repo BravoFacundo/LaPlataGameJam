@@ -11,6 +11,7 @@ public class PusherBehaviour : MonoBehaviour
     public float pushForce = 20f;
     [SerializeField] private float pushingSpeed = 1.0f;
     [SerializeField] private float retractionSpeed = 2.0f;
+    [SerializeField] private float startDelay = 0;
     private float startTime;
 
     [Header("References")]
@@ -20,7 +21,15 @@ public class PusherBehaviour : MonoBehaviour
 
     private void Start()
     {
+        isPushing = false;
+        StartCoroutine(StartDelay(startDelay));
+    }
+
+    private IEnumerator StartDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
         startTime = Time.time;
+        isPushing = true;
     }
 
     private void Update()

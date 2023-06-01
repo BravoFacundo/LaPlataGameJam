@@ -10,6 +10,17 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
     Vector3 moveDirection;
 
+    [Header("Jump")]
+    [SerializeField] float jumpForce;
+    [SerializeField] float jumpCooldown;
+    [SerializeField] float airMultiplier;
+    bool readyToJump = true;
+
+    [Header("Keybinds")]
+    [SerializeField] KeyCode jumpKey = KeyCode.Space;
+    [SerializeField] KeyCode growKey = KeyCode.Mouse0;
+    [SerializeField] KeyCode shrinkKey = KeyCode.Mouse1;
+
     [Header("References")]
     [SerializeField] private Transform cam;
     [SerializeField] private Transform orientation;
@@ -24,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         InputHandling();
-        SpeedControl();
+        //SpeedControl();
 
     }
     private void FixedUpdate()
@@ -36,7 +47,20 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetKey(jumpKey)) //&& readyToJump && grounded
+        {
+            readyToJump = false;
+            Jump();
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
     }
+    private void Jump()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        rb.AddForce(orientation.up * jumpForce, ForceMode.Impulse);
+    }
+    private void ResetJump() => readyToJump = true;
 
     private void MovePlayer()
     {
