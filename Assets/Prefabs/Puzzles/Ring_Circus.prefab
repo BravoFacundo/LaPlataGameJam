@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4310203422214216240}
   - component: {fileID: 4310203422214216243}
   m_Layer: 0
-  m_Name: CircusRing
+  m_Name: Ring_Circus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

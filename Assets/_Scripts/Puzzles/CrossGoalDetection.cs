@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasketGoalHandler : MonoBehaviour
+public class CrossGoalDetection : MonoBehaviour
 {
     [Header("Goal")]
     [SerializeField] string thisGoal;

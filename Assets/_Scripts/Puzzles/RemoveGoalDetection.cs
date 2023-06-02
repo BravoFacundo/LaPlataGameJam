@@ -2,30 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BowlingGoalHandler : MonoBehaviour
+public class RemoveGoalDetection : MonoBehaviour
 {
     [Header("Goal")]
     [SerializeField] string thisGoal;
     [SerializeField] GameManager gameManager;
 
     [Header("Behaviour")]
-    [SerializeField] private List<GameObject> pinObjects = new List<GameObject>();
+    [SerializeField] private List<GameObject> insideObjects = new List<GameObject>();
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Pin"))
+        if (other.CompareTag("RemovableGoal"))
         {
-            pinObjects.Add(other.gameObject);
+            insideObjects.Add(other.gameObject);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Pin"))
+        if (other.CompareTag("RemovableGoal"))
         {
-            pinObjects.Remove(other.gameObject);
+            insideObjects.Remove(other.gameObject);
 
-            if (pinObjects.Count == 0)
+            if (insideObjects.Count == 0)
             {
                 AllPinesExited();
             }
@@ -35,5 +35,6 @@ public class BowlingGoalHandler : MonoBehaviour
     private void AllPinesExited()
     {
         gameManager.AddGoalToList(thisGoal);
+        Destroy(gameObject);
     }
 }
