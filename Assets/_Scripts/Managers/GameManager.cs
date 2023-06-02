@@ -2,49 +2,119 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class GoalData
+{
+    public string goalType;
+    public int maxGoalCount;
+}
+
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private List<string> GoalList;
-    [SerializeField] private List<string> currentGoalList;
+    [Header("Configuration")]
+    [SerializeField] private bool startWithTutorial;
+
+    [Header("Goals")]
+    [SerializeField] private List<GoalData> currentGoals = new List<GoalData>();
+    [SerializeField] private List<GoalData> objectiveGoals = new List<GoalData>();
+    private bool tutorialCompleted = false;
 
     [Header("References")]
     [SerializeField] private MusicManager musicManager;
+    [SerializeField] private ChangeAreaColor areaColorManager;
 
     private void Start()
     {
-        CheckGoalList();
+        InitializeCurrentGoals();
+
+        if (startWithTutorial) AddGoalToList("Tutorial");
+        else CheckGoalList();
     }
 
-    public void AddGoalToList(string goalToAdd)
+    private void InitializeCurrentGoals()
     {
-        if (!currentGoalList.Contains(goalToAdd)) currentGoalList.Add(goalToAdd);
-        CheckGoalList();
+        foreach (var goal in objectiveGoals)
+        {
+            GoalData newGoal = new GoalData();
+            newGoal.goalType = goal.goalType;
+            newGoal.maxGoalCount = 0;
+            currentGoals.Add(newGoal);
+        }
+    }
+
+    public void AddGoalToList(string goalType)
+    {
+        GoalData objectiveGoal = objectiveGoals.Find(x => x.goalType == goalType);
+        if (objectiveGoal != null)
+        {
+            GoalData currentGoal = currentGoals.Find(x => x.goalType == goalType);
+            int maxGoalCount = objectiveGoal.maxGoalCount;
+            int currentGoalCount = currentGoal.maxGoalCount;
+            if (currentGoalCount < maxGoalCount)
+            {
+                currentGoal.maxGoalCount++;
+                CheckGoalList();
+
+                if (currentGoalCount + 1 == maxGoalCount)
+                {
+                    NewAreaCompleted(goalType);
+                }
+                else
+                {
+                    NewObjectiveCompleted(goalType);
+                }
+            }
+            
+        }
     }
 
     private void CheckGoalList()
     {
         bool hasAllGoals = true;
-        foreach (string str in GoalList)
+        foreach (var goal in objectiveGoals)
         {
-            if (!currentGoalList.Contains(str))
+            GoalData currentGoal = currentGoals.Find(x => x.goalType == goal.goalType);
+            if (currentGoal.maxGoalCount < goal.maxGoalCount)
             {
                 hasAllGoals = false;
                 break;
-            }
-            if (currentGoalList.Contains("Tutorial"))
-            {
-                musicManager.PlayMusicClip("Original");
             }
         }
 
         if (hasAllGoals)
         {
-            musicManager.PlayMusicClip("Final");
+            AllAreasCompleted();
         }
-        else
+
+        GoalData tutorialGoal = currentGoals.Find(x => x.goalType == "Tutorial");
+        if (tutorialGoal != null && tutorialGoal.maxGoalCount == 1 && !tutorialCompleted)
         {
-            //Debug.Log("La lista no contiene todos los strings deseados");
+            TutorialCompleted();
         }
     }
- 
+
+    private void TutorialCompleted()
+    {
+        print("Tutorial Completed");
+        tutorialCompleted = true;
+        musicManager.PlayMusicClip("Original");
+    }
+
+    private void NewObjectiveCompleted(string goalType)
+    {
+        print("New Objetive Completed: " + goalType);
+    }
+
+    private void NewAreaCompleted(string goalType)
+    {
+        print("New Area Completed: " + goalType);
+        areaColorManager.ChangeMaterialColor(goalType);
+    }
+
+    private void AllAreasCompleted()
+    {
+        print("All Area Completed");
+        musicManager.PlayMusicClip("Final");
+    }
+
 }

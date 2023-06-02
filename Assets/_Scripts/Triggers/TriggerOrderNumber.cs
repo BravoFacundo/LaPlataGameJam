@@ -5,11 +5,11 @@ using UnityEngine;
 public class TriggerOrderNumber : MonoBehaviour
 {
     [SerializeField] private int triggerOrderNumber;
-    private GoalManager basketManager;
+    private BasketGoalHandler basketManager;
 
     private void Start()
     {
-        basketManager = transform.parent.GetComponent<GoalManager>();
+        basketManager = transform.parent.GetComponent<BasketGoalHandler>();
     }
 
     private void OnTriggerEnter(Collider other)
