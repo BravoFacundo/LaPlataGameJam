@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnYValue: -10
-  respawnDelay: 5
+  respawnDelay: 10
   initialPosition: {x: 0, y: 0, z: 0}
   initialRotation: {x: 0, y: 0, z: 0, w: 0}
   initialScale: {x: 0, y: 0, z: 0}
@@ -83,7 +83,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: -1326558718596429072, guid: f7c75650e9d1b4f44872f425cd2ae0ce, type: 3}
-  - {fileID: -1640916810249378671, guid: f7c75650e9d1b4f44872f425cd2ae0ce, type: 3}
+  - {fileID: 2100000, guid: c9b9fc20048bf6d4eafca841d2491914, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
