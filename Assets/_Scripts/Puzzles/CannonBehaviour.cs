@@ -13,6 +13,7 @@ public class CannonBehaviour : MonoBehaviour
     [SerializeField] private float rotationSpeed = 1.0f;
     [SerializeField] private float retractionSpeed = 2.0f;
     public float actionDelay = 1.5f;
+    public float cancelMovement = 2f;
     private float startTime;
     private bool actionLock;
 
@@ -42,13 +43,13 @@ public class CannonBehaviour : MonoBehaviour
     public IEnumerator PlayerLaunch()
     {
         yield return new WaitForSeconds(actionDelay);
-        print("launch");
 
         Vector3 forceDirection = MovingPart.forward;
         forceDirection.Normalize();
         playerRB.transform.position = pivot.position;
         playerRB.AddForce(forceDirection * pushForce, ForceMode.Impulse);
 
+        StartCoroutine(playerRB.GetComponent<PlayerMovement>().PausePlayerMovement(cancelMovement));
         StartCoroutine(nameof(PlayerExitCannon));
     }
 

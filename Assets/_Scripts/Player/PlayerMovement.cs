@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
+    [SerializeField] bool canMove = true;
     [SerializeField] float moveSpeed;
     float horizontalInput;
     float verticalInput;
@@ -34,13 +35,23 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        InputHandling();
-        //SpeedControl();
+        if (canMove)
+        {
+            InputHandling();
+            //SpeedControl();
+        }
 
     }
     private void FixedUpdate()
     {
         MovePlayer();
+    }
+
+    public IEnumerator PausePlayerMovement(float delay)
+    {
+        canMove = false;
+        yield return new WaitForSeconds(delay);
+        canMove = true;
     }
 
     private void InputHandling()
