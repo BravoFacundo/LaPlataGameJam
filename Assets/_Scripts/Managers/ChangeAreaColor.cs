@@ -7,12 +7,12 @@ public class ChangeAreaColor : MonoBehaviour
     [Header("Material")]
     [SerializeField] private List<Material> materialsList;
     [SerializeField] private Material targetMaterial;
-    //[SerializeField] private Material originalMaterial;
 
     [Header("Color")]
     [SerializeField] private Color originalColor;
     [SerializeField] private Color targetColor;
     [SerializeField] private Color initialColor;
+    [SerializeField] private float emissionIntensity;
 
     [Header("Animation")]
     [SerializeField] private float transitionTime = 1.0f;
@@ -23,7 +23,8 @@ public class ChangeAreaColor : MonoBehaviour
     {
         foreach (Material material in materialsList)
         {
-            material.SetColor("_EmissionColor", originalColor);
+            material.EnableKeyword("_EMISSION");
+            material.SetColor("_EmissionColor", originalColor * emissionIntensity*2);
             material.SetColor("_Color", originalColor);
         }
 
@@ -42,10 +43,11 @@ public class ChangeAreaColor : MonoBehaviour
 
             float t = Mathf.Clamp01(elapsedTime / transitionTime);
             Color currentColor = Color.Lerp(initialColor, targetColor, t);
+            float currentIntensity = Mathf.Lerp(0f, emissionIntensity * 1.75f, t);
 
             if (targetMaterial != null)
             {
-                targetMaterial.SetColor("_EmissionColor", currentColor);
+                targetMaterial.SetColor("_EmissionColor", currentColor * currentIntensity);
                 targetMaterial.SetColor("_Color", currentColor);
             }
 
