@@ -27,12 +27,12 @@ public class RemoveGoalDetection : MonoBehaviour
 
             if (insideObjects.Count == 0)
             {
-                AllPinesExited();
+                AllObjectsExited();
             }
         }
     }
 
-    private void AllPinesExited()
+    private void AllObjectsExited()
     {
         gameManager.AddGoalToList(thisGoal);
         Destroy(gameObject);
