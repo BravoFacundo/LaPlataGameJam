@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour
 {
     [Header("Menu Configuration")]
-    [SerializeField] private float buttonActionDelay = 1f;
+    [SerializeField] private float buttonActionDelay = 6f;
     [SerializeField] private float upwardForce = 10f;
+    [SerializeField] private float abductionForce = 10f;
 
     [Header("Canvas References")]
     [SerializeField] private GameObject menuPage;
@@ -19,6 +20,11 @@ public class MenuManager : MonoBehaviour
     private Camera mainCamera;
     [SerializeField] private Camera secondaryCamera;
 
+    [Header("Animation References")]
+    [SerializeField] private Transform ufoTransform;
+    [SerializeField] private GameObject ufoLight;
+    private bool isAbducting = false;
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -28,7 +34,7 @@ public class MenuManager : MonoBehaviour
     private IEnumerator PlayButton()
     {
         musicManager.PlayMusicClip(2);
-        ApplyUpwardForce();
+        ApplyAntiGravityForce();
 
         yield return new WaitForSeconds(buttonActionDelay);
         SceneManager.LoadScene("Gameplay");
@@ -77,6 +83,18 @@ public class MenuManager : MonoBehaviour
         if (ballRB != null)
         {
             ballRB.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
+        }
+    }
+
+    private void ApplyAntiGravityForce()
+    {
+        if (!isAbducting)
+        {
+            ballRB.useGravity = false;
+            ballRB.velocity = Vector3.zero;
+            ballRB.AddForce((ufoTransform.position - transform.position).normalized * abductionForce, ForceMode.Impulse);
+            ufoLight.SetActive(true);
+            isAbducting = true;
         }
     }
 
