@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] bool canMove = true;
+    [SerializeField] bool canChangeSize = true;
     [SerializeField] float moveSpeed;
     float horizontalInput;
     float verticalInput;
@@ -15,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float jumpCooldown;
     [SerializeField] float airMultiplier;
-    bool readyToJump = true;
+    bool canJump = true;
 
     [Header("Keybinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
@@ -38,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         if (canMove)
         {
             InputHandling();
-            //SpeedControl();
+            SpeedControl();
         }
 
     }
@@ -56,14 +57,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void InputHandling()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-
-        if (Input.GetKey(jumpKey)) //&& readyToJump && grounded
+        if (canMove)
         {
-            readyToJump = false;
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxisRaw("Vertical");          
+        }
+
+        if (Input.GetKey(jumpKey) && canJump) //&& readyToJump && grounded
+        {
+            canJump = false;
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown);
+        }
+
+        if (canChangeSize)
+        {
+
         }
     }
     private void Jump()
@@ -71,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(orientation.up * jumpForce, ForceMode.Impulse);
     }
-    private void ResetJump() => readyToJump = true;
+    private void ResetJump() => canJump = true;
 
     private void MovePlayer()
     {
@@ -83,11 +92,11 @@ public class PlayerMovement : MonoBehaviour
     }
     private void SpeedControl()
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        Vector3 flatVel = new Vector3(rb.velocity.x, rb.velocity.y, rb.velocity.z);
         if (flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, limitedVel.y, limitedVel.z);
+            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
     }
 }

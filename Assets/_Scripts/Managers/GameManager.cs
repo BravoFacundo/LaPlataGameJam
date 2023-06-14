@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour
     {
         print("Tutorial Completed");
         tutorialCompleted = true;
+        areaColorManager.ChangeMaterialColor("Tutorial");
         musicManager.PlayMusicClip("Original");
     }
 

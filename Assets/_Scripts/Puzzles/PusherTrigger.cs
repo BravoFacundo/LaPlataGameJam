@@ -38,7 +38,7 @@ public class PusherTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider collision)
     {
-        Rigidbody collisionRB = collision.gameObject.GetComponent<Rigidbody>();
+        Rigidbody collisionRB = collision.gameObject.GetComponent<Rigidbody>(); //Todo el tiempo?
 
         if (pusherBehaviour.isPushing && collisionRB != null) //&& !pushed
         {
