@@ -2,6 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class SizeData
+{
+    public string size;
+    public float ballScale;
+    public float ballWeight;
+    public float moveSpeed;
+    public float jumpForce;
+
+    public float cameraDistance;
+    public float cameraFOV;
+}
+
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
