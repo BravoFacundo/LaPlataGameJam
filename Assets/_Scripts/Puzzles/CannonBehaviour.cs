@@ -47,9 +47,9 @@ public class CannonBehaviour : MonoBehaviour
         Vector3 forceDirection = MovingPart.forward;
         forceDirection.Normalize();
         playerRB.transform.position = pivot.position;
-        playerRB.AddForce(forceDirection * pushForce, ForceMode.Impulse);
+        playerRB.AddForce(forceDirection * pushForce, ForceMode.VelocityChange);
 
-        StartCoroutine(playerRB.GetComponent<PlayerMovement>().PausePlayerMovement(cancelMovement));
+        StartCoroutine(playerRB.GetComponent<PlayerController>().PausePlayerMovement(cancelMovement));
         StartCoroutine(nameof(PlayerExitCannon));
     }
 

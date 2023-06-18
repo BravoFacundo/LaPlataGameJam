@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 [System.Serializable]
 public class BallSizeData
@@ -14,15 +15,16 @@ public class BallSizeData
     public float jumpForce;
 
     //public float cameraDistance;
-    //public float cameraFOV;
+    public float cameraFOV;
 }
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Debug")]
     [SerializeField] bool canMove = true;
     [SerializeField] bool canChangeSize = true;
     [SerializeField] bool canJump = true;
+    [SerializeField] bool limitSpeed = true;
 
     [Header("Configuration")]
     [SerializeField] private int currentSizeIndex = 1;
@@ -46,32 +48,33 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] KeyCode shrinkKey = KeyCode.Mouse1;
 
     [Header("References")]
-    [SerializeField] private Transform cam;
-    [SerializeField] private Transform orientation;
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform cam;
+    [SerializeField] private CinemachineFreeLook cinemachineFreeLook;
 
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        orientation = transform.Find("Orientation");
+
+        cam = Camera.main.transform;
+        cinemachineFreeLook = cam.transform.GetChild(0).GetComponent<CinemachineFreeLook>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     private void Start()
     {
-        orientation = transform.GetChild(1);
-        cam = Camera.main.transform;
-        rb = GetComponent<Rigidbody>();
-
         SetBallSizeDefaultValues();
-        ChangeSize();
+        StartCoroutine(ChangeSize());
     }
     private void Update()
     {
-        if (canMove)
-        {
-            InputHandling();
-            SpeedControl();
-        }
-
+        InputHandling();
+        SpeedControl();
     }
-    private void FixedUpdate()
-    {
-        MovePlayer();
-    }
+    private void FixedUpdate() => MovePlayer();
 
     public IEnumerator PausePlayerMovement(float delay)
     {
@@ -102,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
                 if (currentSizeIndex > 0)
                 {
                     currentSizeIndex--;
-                    ChangeSize();
+                    StartCoroutine(ChangeSize());
                     canChangeSize = false;
                     Invoke(nameof(ResetChangeSize), changeSizeCooldown);
                 }
@@ -112,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
                 if (currentSizeIndex < 2)
                 {
                     currentSizeIndex++;
-                    ChangeSize();
+                    StartCoroutine(ChangeSize());
                     canChangeSize = false;
                     Invoke(nameof(ResetChangeSize), changeSizeCooldown);
                 }
@@ -120,18 +123,19 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void ChangeSize()
+    private IEnumerator ChangeSize()
     {
+        cinemachineFreeLook.m_Lens.FieldOfView = ballSize[currentSizeIndex].cameraFOV;
+        yield return new WaitForEndOfFrame();
         transform.localScale = Vector3.one * ballSize[currentSizeIndex].scale;
         rb.mass = ballSize[currentSizeIndex].mass;
-        print(ballSize[currentSizeIndex].size);
     }
     private void ResetChangeSize() => canChangeSize = true;
 
     private void Jump()
     {
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        rb.AddForce(orientation.up * ballSize[currentSizeIndex].jumpForce, ForceMode.Impulse);
+        rb.AddForce( Vector3.up * ballSize[currentSizeIndex].jumpForce, ForceMode.Impulse);
     }
     private void ResetJump() => canJump = true;
 
@@ -145,11 +149,14 @@ public class PlayerMovement : MonoBehaviour
     }
     private void SpeedControl()
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, rb.velocity.y, rb.velocity.z);
-        if (flatVel.magnitude > moveSpeed)
+        if (limitSpeed)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            Vector3 flatVel = new Vector3(rb.velocity.x, rb.velocity.y, rb.velocity.z);
+            if (flatVel.magnitude > moveSpeed)
+            {
+                Vector3 limitedVel = flatVel.normalized * moveSpeed;
+                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            }
         }
     }
 
