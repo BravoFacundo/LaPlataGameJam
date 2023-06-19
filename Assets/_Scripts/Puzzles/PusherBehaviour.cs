@@ -6,9 +6,11 @@ public class PusherBehaviour : MonoBehaviour
 {
     [Header("Debug")]
     public bool isPushing = true;
+    public Rigidbody playerRB;
 
     [Header("Configuration")]
     public float pushForce = 20f;
+    public float cancelMovement = 2f;
     [SerializeField] private float pushingSpeed = 1.0f;
     [SerializeField] private float retractionSpeed = 2.0f;
     [SerializeField] private float startDelay = 0;
@@ -30,6 +32,17 @@ public class PusherBehaviour : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         startTime = Time.time;
         isPushing = true;
+    }
+
+    public void PlayerPush()
+    {
+        Vector3 forceDirection = transform.right;
+        forceDirection.Normalize();
+
+        playerRB.velocity = Vector3.zero;
+        playerRB.AddForce(forceDirection * pushForce, ForceMode.VelocityChange);
+
+        StartCoroutine(playerRB.GetComponent<PlayerController>().PausePlayerMovement(cancelMovement));
     }
 
     private void Update()

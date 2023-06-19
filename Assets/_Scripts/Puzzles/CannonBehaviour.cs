@@ -46,6 +46,8 @@ public class CannonBehaviour : MonoBehaviour
 
         Vector3 forceDirection = MovingPart.forward;
         forceDirection.Normalize();
+
+        playerRB.velocity = Vector3.zero;
         playerRB.transform.position = pivot.position;
         playerRB.AddForce(forceDirection * pushForce, ForceMode.VelocityChange);
 

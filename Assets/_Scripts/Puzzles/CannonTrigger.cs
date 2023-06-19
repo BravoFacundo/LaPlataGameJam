@@ -7,7 +7,6 @@ public class CannonTrigger : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private CannonBehaviour cannonBehaviour;
     private float triggerEnterDelay;
-    private bool pushed;
 
     private void Awake()
     {
