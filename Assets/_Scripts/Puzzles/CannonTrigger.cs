@@ -5,8 +5,10 @@ using UnityEngine;
 public class CannonTrigger : MonoBehaviour
 {
     [Header("Debug")]
+    [SerializeField] private float triggerEnterDelay;
+    
+    [Header("References")]
     [SerializeField] private CannonBehaviour cannonBehaviour;
-    private float triggerEnterDelay;
 
     private void Awake()
     {

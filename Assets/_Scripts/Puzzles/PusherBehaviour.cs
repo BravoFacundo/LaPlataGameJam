@@ -8,9 +8,11 @@ public class PusherBehaviour : MonoBehaviour
     public bool isPushing = true;
     public Rigidbody playerRB;
 
-    [Header("Configuration")]
+    [Header("Push Configuration")]
     public float pushForce = 20f;
     public float cancelMovement = 2f;
+
+    [Header("Object Configuration")]
     [SerializeField] private float pushingSpeed = 1.0f;
     [SerializeField] private float retractionSpeed = 2.0f;
     [SerializeField] private float startDelay = 0;

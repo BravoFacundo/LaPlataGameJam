@@ -8,12 +8,14 @@ public class CannonBehaviour : MonoBehaviour
     public bool isMoving = true;
     public Rigidbody playerRB;
 
-    [Header("Configuration")]
+    [Header("Push Configuration")]
     public float pushForce = 20f;
+    public float cancelMovement = 2f;
+
+    [Header("Object Configuration")]
     [SerializeField] private float rotationSpeed = 1.0f;
     [SerializeField] private float retractionSpeed = 2.0f;
     public float actionDelay = 1.5f;
-    public float cancelMovement = 2f;
     private float startTime;
     private bool actionLock;
 

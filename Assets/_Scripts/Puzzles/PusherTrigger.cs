@@ -5,8 +5,10 @@ using UnityEngine;
 public class PusherTrigger : MonoBehaviour
 {
     [Header("Debug")]
-    [SerializeField] private PusherBehaviour pusherBehaviour;
     [SerializeField] private bool pushed;
+
+    [Header("References")]
+    [SerializeField] private PusherBehaviour pusherBehaviour;
 
     private void Awake()
     {
