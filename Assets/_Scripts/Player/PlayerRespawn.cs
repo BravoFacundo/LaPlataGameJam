@@ -8,21 +8,23 @@ public class PlayerRespawn : MonoBehaviour
     public float respawnYOffset;
     public float safeGroundHeightDetection;
     [SerializeField] private Vector3 lastSafeGroundPosition;
+    private int objLayer;
+    private int playerLayer;
+
+    private void Start()
+    {
+        objLayer = LayerMask.NameToLayer("PuzzleObject");
+        playerLayer = LayerMask.NameToLayer("Player");
+    }
 
     private void Update()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, safeGroundHeightDetection))
         {
-            if (hit.collider.CompareTag("SafeGround"))
-            {
-                lastSafeGroundPosition = hit.collider.transform.position;
-            }
+            if (hit.collider.CompareTag("SafeGround")) lastSafeGroundPosition = hit.collider.transform.position;
         }
 
-        if (transform.position.y < respawnYValue)
-        {
-            RespawnPlayer();
-        }
+        if (transform.position.y < respawnYValue) RespawnPlayer();
     }
 
     private void RespawnPlayer()
@@ -32,6 +34,7 @@ public class PlayerRespawn : MonoBehaviour
             Vector3 respawnPosition = lastSafeGroundPosition + new Vector3(0f, lastSafeGroundPosition.y + respawnYOffset, 0f);
             transform.position = respawnPosition;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
+            Physics.IgnoreLayerCollision(objLayer, playerLayer, false);
         }
     }
 }

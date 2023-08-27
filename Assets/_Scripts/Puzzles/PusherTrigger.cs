@@ -18,7 +18,10 @@ public class PusherTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("Player"))
+        {
             pusherBehaviour.playerRB = collision.GetComponent<Rigidbody>();
+            pusherBehaviour.PlayerEnter();
+        }
     }
     private void OnTriggerStay(Collider collision)
     {
@@ -27,7 +30,6 @@ public class PusherTrigger : MonoBehaviour
             pusherBehaviour.PlayerPush();
             pushed = true;
         }
-
     }
     private void OnTriggerExit(Collider collision)
     {

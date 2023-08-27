@@ -17,6 +17,8 @@ public class PusherBehaviour : MonoBehaviour
     [SerializeField] private float retractionSpeed = 2.0f;
     [SerializeField] private float startDelay = 0;
     private float startTime;
+    private int objLayer;
+    private int playerLayer;
 
     [Header("References")]
     [SerializeField] private Transform MovingPart;
@@ -26,6 +28,10 @@ public class PusherBehaviour : MonoBehaviour
     private void Start()
     {
         isPushing = false;
+
+        objLayer = LayerMask.NameToLayer("PuzzleObject");
+        playerLayer = LayerMask.NameToLayer("Player");
+
         StartCoroutine(StartDelay(startDelay));
     }
 
@@ -38,6 +44,8 @@ public class PusherBehaviour : MonoBehaviour
 
     public void PlayerPush()
     {
+        Physics.IgnoreLayerCollision(objLayer, playerLayer, true);
+
         Vector3 forceDirection = transform.right;
         forceDirection.Normalize();
 
@@ -45,6 +53,11 @@ public class PusherBehaviour : MonoBehaviour
         playerRB.AddForce(forceDirection * pushForce, ForceMode.VelocityChange);
 
         StartCoroutine(playerRB.GetComponent<PlayerController>().PausePlayerMovement(cancelMovement));
+    }
+
+    public void PlayerEnter()
+    {
+        //Physics.IgnoreLayerCollision(objLayer, playerLayer, false);
     }
 
     private void Update()

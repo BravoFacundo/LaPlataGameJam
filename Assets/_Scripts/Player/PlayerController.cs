@@ -79,7 +79,9 @@ public class PlayerController : MonoBehaviour
     public IEnumerator PausePlayerMovement(float delay)
     {
         canMove = false;
+        limitSpeed = false;
         yield return new WaitForSeconds(delay);
+        limitSpeed = true;
         canMove = true;
     }
 

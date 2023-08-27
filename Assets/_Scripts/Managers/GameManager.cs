@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 {
     [Header("Configuration")]
     [SerializeField] private bool startWithTutorial;
+    [SerializeField] private bool startWithAllCompleted;
+    public bool gameCompleted;
 
     [Header("Goals")]
     [SerializeField] private List<GoalData> currentGoals = new List<GoalData>();
@@ -27,8 +29,16 @@ public class GameManager : MonoBehaviour
     {
         InitializeCurrentGoals();
 
-        if (startWithTutorial) AddGoalToList("Tutorial");
-        else CheckGoalList();
+        if (startWithAllCompleted)
+        {
+            currentGoals = objectiveGoals;
+            CheckGoalList();
+        }
+        else
+        {
+            if (startWithTutorial) AddGoalToList("Tutorial");
+            else CheckGoalList();
+        }
     }
 
     private void InitializeCurrentGoals()
@@ -115,6 +125,7 @@ public class GameManager : MonoBehaviour
     private void AllAreasCompleted()
     {
         print("All Area Completed");
+        gameCompleted = true;
         musicManager.PlayMusicClip("Final");
     }
 
