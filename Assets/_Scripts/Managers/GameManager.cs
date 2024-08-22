@@ -11,10 +11,12 @@ public class GoalData
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Configuration")]
+    [Header("Game Status")]
+    public bool gameCompleted;
+
+    [Header("Debug Configuration")]
     [SerializeField] private bool startWithTutorial;
     [SerializeField] private bool startWithAllCompleted;
-    public bool gameCompleted;
 
     [Header("Goals")]
     [SerializeField] private List<GoalData> currentGoals = new List<GoalData>();
